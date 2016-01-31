@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simulation for exponential distribution with Shiny</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Simulation for exponential distribution with Shiny">
+  <meta name="author" content="David Li">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Simulation for exponential distribution with Shiny</h1>
+    <h2></h2>
+    <p>David Li<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Simulation for exponential distribution with Shiny</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>In Coursera Data Science course 6 - Statistical Inference Project Part 1, I had investigated the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda.</p></li>
+<li><p>I have deveoped a Shiny app <a href="https://davidli88.shinyapps.io/Course9Proj/">https://davidli88.shinyapps.io/Course9Proj/</a> to determine if the more number of exponentials or number of simulations, the closer of the simulation center to the theoretical center.</p></li>
+<li><p>In this Shiny app, you can play with different settings for lambda or the number of Exponentials or the number of simulations to find out if more Exponentials or simulations, the averages of samples follow normal distribution.</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h3>ui.R</h3>
+  </hgroup>
+  <article data-timings="">
+    <h5>sidebarPanel</h5>
+
+<pre><code>sliderInput(&#39;lambda&#39;, &#39;lambda&#39;, min=0.01, max=10,
+            value=0.2, step=0.01),
+sliderInput(&#39;ExpNum&#39;, &#39;Number of Exponentials&#39;, min=10, max=500,
+            value=40, step=10, round=0),
+sliderInput(&#39;SimuNum&#39;, &#39;Number of Simulations&#39;, min=10, max=10000,
+            value=1000, step=10, round=0),
+checkboxInput(&#39;showQQ&#39;, &#39;Show Normal Q-Q Plot&#39;)
+</code></pre>
+
+<h5>mainPanel</h5>
+
+<pre><code>plotOutput(&#39;histPlot&#39;),
+plotOutput(&#39;qqPlot&#39;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h3>server.R</h3>
+  </hgroup>
+  <article data-timings="">
+    <h4>output$histPlot</h4>
+
+<pre><code>hist(row_means, breaks=50, prob=TRUE,
+     main=paste(&quot;Density of means&quot;), 
+     xlab=paste(&quot;Theoretical center &quot;,round(1/lambda,4),&quot; vs Simulation center &quot;,round(mean_simu,4)), 
+     ylab=&quot;Density&quot;,
+     col=&quot;lightblue&quot;)
+</code></pre>
+
+<h4>output$qqPlot</h4>
+
+<pre><code>if (input$showQQ) {
+  qqnorm(row_means)
+  qqline(row_means, col = 2)
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"></p>
+
+<p><img src="assets/fig/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Simulation for exponential distribution with Shiny'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='ui.R'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='server.R'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='NA'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
